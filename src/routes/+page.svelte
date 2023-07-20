@@ -8,7 +8,6 @@
         const emails = docSnap.data().emails
         emails.push(userEmail)
         await setDoc(docRef, { emails })
-        alert('Thanks for signing up! We will be in touch soon.')
         userEmail = ''
         thankyou = true
     }
@@ -23,14 +22,14 @@
         }
     }
 
-    let thankyou = true
+    let thankyou = false
 </script>
 
 {#if !thankyou}
-<div class="w-full bg-slate-900">
+<div class="w-full bg-slate-900 flex flex-col items-center justify-center">
     <div class="bg-slate-950 text w-full h-10 text-white flex items-center justify-center font-semibold tracking-wide">Opt in via email for early access</div>
     
-    <div class="flex items-center ml-12 mt-2">
+    <div class="flex items-center -ml-4 mt-4 mb-2">
         <img alt="The project logo" src="./logo.png" class='w-20 h-20' draggable="false"/>
         <h2 class='text-white font-bold -ml-2 text-3xl'>WebFlame AI</h2>
     </div>
