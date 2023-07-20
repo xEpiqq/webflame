@@ -5,10 +5,10 @@
     function counterAndSpinner() {
         counter += 1
 
-        counterSpinner = true
-        setTimeout(() => {
-            counterSpinner = false
-        }, 250)
+        // counterSpinner = true
+        // setTimeout(() => {
+        //     counterSpinner = false
+        // }, 250)
 
         if (counter === 20) {
             counter = 0
@@ -28,7 +28,7 @@
     <p class="text-white text-center px-10 italic text-2xl mt-4">AI Generated UI</p>
 
     <div class="w-full h-full flex justify-center">
-        <div class="bg-black w-80 h-96 mt-4 rounded-lg items-end flex flex-col relative">
+        <button class="bg-black w-80 h-96 mt-4 rounded-lg items-end flex flex-col relative" on:click={counterAndSpinner} >
             {#if counterSpinner}
                 <div class="w-full h-full flex justify-center items-center z-30 absolute">
                     <div class="bg-black w-full h-full opacity-30 z-40 absolute"/>
@@ -97,8 +97,8 @@
             {#if counter === 19}
             <img alt="athletics website design"src="./athletics.png" class="w-full h-full rounded-tr-lg rounded-tl-lg border-2 border-white" />
             {/if}
-            <button class="bg-white w-full h-16 rounded-br-lg rounded-bl-lg py-3 text-black text-center hover:bg-slate-100 duration-150 font-bold" on:click={counterAndSpinner}>Inspire Me 👆</button>
-        </div>
+            <button class="bg-white w-full h-16 rounded-br-lg rounded-bl-lg py-3 text-black text-center hover:bg-slate-100 duration-150 font-bold" >Inspire Me 👆</button>
+            </button>
 
     </div>
     <div class="w-full h-full flex items-center justify-center flex-col">
