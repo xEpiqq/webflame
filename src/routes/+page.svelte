@@ -1,21 +1,32 @@
 <script>
-    let counter = 0
-    let counterSpinner = false
+    import { app, db } from '$lib/firebase'
+    import { doc, getDoc, setDoc } from 'firebase/firestore'
 
+    async function submitEmail() {
+        const docRef = doc(db, 'email', "emails")
+        const docSnap = await getDoc(docRef)
+        const emails = docSnap.data().emails
+        emails.push(userEmail)
+        await setDoc(docRef, { emails })
+        alert('Thanks for signing up! We will be in touch soon.')
+        userEmail = ''
+        thankyou = true
+    }
+
+    let userEmail = ''
+    let counter = 0
     function counterAndSpinner() {
         counter += 1
-
-        // counterSpinner = true
-        // setTimeout(() => {
-        //     counterSpinner = false
-        // }, 250)
 
         if (counter === 20) {
             counter = 0
         }
     }
+
+    let thankyou = true
 </script>
 
+{#if !thankyou}
 <div class="w-full bg-slate-900">
     <div class="bg-slate-950 text w-full h-10 text-white flex items-center justify-center font-semibold tracking-wide">Opt in via email for early access</div>
     
@@ -29,14 +40,6 @@
 
     <div class="w-full h-full flex justify-center">
         <button class="bg-black w-80 h-96 mt-4 rounded-lg items-end flex flex-col relative" on:click={counterAndSpinner} >
-            {#if counterSpinner}
-                <div class="w-full h-full flex justify-center items-center z-30 absolute">
-                    <div class="bg-black w-full h-full opacity-30 z-40 absolute"/>
-                    <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16 z-50 absolute"></div>
-                </div>
-            {/if}
-
-
             {#if counter === 0}
                 <img alt="kitty website design"src="./kitty.png" class="w-full h-full rounded-tr-lg rounded-tl-lg border-2 border-white" />
             {/if}
@@ -102,8 +105,11 @@
 
     </div>
     <div class="w-full h-full flex items-center justify-center flex-col">
-        <input type="email" placeholder="Enter Your Email For Early Access" class="rainbow-border bg-black w-80 h-16 rounded-lg py-3 text-white text-center hover:bg-slate-950 font-bold mt-16" />
-        <button class="bg-white w-80 h-12 rounded-lg text-black text-center hover:bg-slate-100 duration-150 font-bold mt-4">Get Early Access</button>
+        
+        <form on:submit={submitEmail} class="flex flex-col">
+            <input name="email" type="email"  bind:value={userEmail} placeholder="Enter Your Email For Early Access" class="rainbow-border bg-black w-80 h-16 rounded-lg py-3 text-white text-center hover:bg-slate-950 font-bold mt-16" />
+            <button class="bg-white w-80 h-12 rounded-lg text-black text-center hover:bg-slate-100 duration-150 font-bold mt-4">Get Early Access</button>
+        </form>
         <style>
             .rainbow-border {
                 border: 2px solid;
@@ -127,3 +133,16 @@
     </div>
 
 </div>
+{/if}
+
+{#if thankyou}
+<div class="w-full bg-slate-900 flex items-center justify-center flex-col">
+    <div class="bg-slate-950 text w-full h-10 text-white flex items-center justify-center font-semibold tracking-wide">We'll be in touch soon!</div>
+    <div class="text-white font-bold mt-20 text-3xl text-center px-6">Thank you for signing up for early access!! BUT WAIT</div>
+    <p class="text-center px-6 text-white mt-2">If you're an eager fella... and want to receive <span class="font-bold">pre-alpha</span> access WITH exclusive updates from the devs,</p>
+    <p class="text-center px-6 text-white mt-10">for just <span class="text-2xl">☕ ☕ ($9)</span> you can</p>
+    <a href="https://buy.stripe.com/9AQ8yI0sMcsj5lm6oq">
+    <button class="bg-slate-950 text-white font-bold mt-10 border-2 border-slate-300 py-4 px-4 rounded-lg hover:bg-slate-800 duration-150 text-2xl">Unlock Pre-Alpha Access</button>
+    </a>
+</div>
+{/if}
